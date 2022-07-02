@@ -52,4 +52,7 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "Dino/register.html")
-
+def play(request):
+    return render(request, "Dino/play.html")
+def create(request):
+    return render(request, "Dino/create.html")

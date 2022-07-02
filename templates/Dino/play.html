@@ -1,3 +1,18 @@
 {% extends 'Dino/layout.html' %}
 {% block body %}
-{% end block %}
+<div class="quiz">
+    <form>
+        {% for question in questions %}
+        <h2>{question.title}</h2>
+        {% if question.type == 'choices' %}
+            {% for choice in question.choice %}
+            <input type="radio">{ choice.title }
+            {% endfor %}
+        {% else %}
+            <textarea>Answer</textarea>
+        {% endif %}
+        {% endfor %}
+    </form>
+</div>
+
+{% endblock %}
