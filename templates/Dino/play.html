@@ -1,11 +1,11 @@
 {% extends 'Dino/layout.html' %}
 {% block body %}
 <div class="quiz">
-    <form>
+    <form action="{% url 'play' quiz.id %}" method="POST">
         {% for question in questions %}
-        <h2>{question.title}</h2>
+        <h2>{{question.title}}</h2>
         {% if question.type == 'choices' %}
-            {% for choice in question.choice %}
+            {% for choice in choices.objects.filter() %}
             <input type="radio">{ choice.title }
             {% endfor %}
         {% else %}
