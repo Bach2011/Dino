@@ -7,6 +7,7 @@ class Question(models.Model):
         quiz_id = models.IntegerField(default=1)
         title = models.CharField(max_length=100)
         right_answer_id = models.IntegerField(default=1)
+        type = models.CharField(max_length=100)
         def __str__ (self):
                 return f"question: {self.title}"
 class Quiz(models.Model):
@@ -17,7 +18,7 @@ class Quiz(models.Model):
                 return f"Quiz: {self.name}"
 class Answer(models.Model):
         answer = models.CharField(max_length=1000, blank=True, null=True)
-        choices = models.IntegerField(blank=True, null=True)
+        choices_id = models.IntegerField()
         quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, name="quiz", blank=True, null=True)
 class Response(models.Model):
         answer = models.ForeignKey(Answer, on_delete=models.CASCADE, blank=True, null=True)

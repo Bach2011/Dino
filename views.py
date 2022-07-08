@@ -69,10 +69,10 @@ def create_question(request, id):
         name = request.POST.get('question')
         text = request.POST.get('text')
         if text != "" or text != None:
-            RightAnswer.objects.create(answer=text,id=quiz)
-            Question.objects.create(title=name, right_answer_id=RightAnswer.objects.last().id)
+            RightAnswer.objects.create(answer=text,quiz_id=id)
+            Question.objects.create(title=name, right_answer_id=RightAnswer.objects.last().id, type="text")
         else :
-            Question.objects.create(title=name, id=id, right_answer_id=RightAnswer.objects.last().id)
+            Question.objects.create(title=name, id=id, right_answer_id=RightAnswer.objects.last().id, type="multiple choice")
             option1 = request.POST.get('optionA')
             option2 = request.POST.get('optionB')
             option3 = request.POST.get('optionC')
@@ -85,7 +85,7 @@ def create_question(request, id):
             right_choice = Choices.objects.get(quiz_id=id)[id-1]
             RightAnswer.objects.create(quiz_id=id, choice=right_choice)
             return redirect(reverse('edit_quiz', args=id))
-        quiz = Quiz.objects.get(id=quiz)
+        quiz = Quiz.objects.get(id=id)
         quiz.question.add(Question.objects.last())
         quiz.save()
         return redirect(reverse("edit_quiz", args=[id]))
