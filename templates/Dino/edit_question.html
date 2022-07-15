@@ -1,0 +1,34 @@
+{% extends 'Dino/layout.html' %}
+{% block body %}
+    <div class="quiz"><br>
+        <form action="{% url 'edit_question' quiz.id question.id %}" method="POST">
+            {% csrf_token %}
+                <h3>Question</h3>
+            <input type="text" placeholder="Question" name="question"  value="{{question.title}}"><br><br>
+            <label for="type">Type:</label>
+            <select class="type" name="type" id="type">
+                <option value="select">Multiple Choices</option>
+                <option value="text">Answer by text</option>
+            </select><br><br>
+    
+            <div class="text"><textarea id="text" placeholder="Answer" style="display:none;" name="text">{{text}}</textarea></div><br>
+    
+            <div class="options" style="display:block;">
+            <input type="text" class="optionA" placeholder="Answer A" name="optionA" value="{{choices.0}}">
+            <input type="checkbox" value="">
+            <br><br>
+            <input type="text" class="optionB" placeholder="Answer B" name="optionB" value="{{choices.1}}">
+            <input type="checkbox" value="">
+            <br><br>
+            <input type="text" class="optionC" placeholder="Answer C" name="optionC" value="{{choices.2}}">
+            <input type="checkbox" value="">
+            <br><br>
+            <input type="text" class="optionD" placeholder="Answer D" value="{{choices.3}}">
+            <input type="checkbox" value="">
+            <br><br>
+            <input type="hidden" value="" name="correct">
+            </div>
+            <button type="submit" class="btn btn-primary add">Save</button><br>
+        </form> 
+    </div>
+{% endblock %}

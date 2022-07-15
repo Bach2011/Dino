@@ -2,8 +2,9 @@
 {% block body %}
 {% for quiz in quizzes %}
 <div class="quiz">
-    <h3>{{ quiz.name }}</h3><br>
-    <a href="{% url 'edit_quiz' quiz.id %}">Edit</a>
+    {{quiz.name}}
+    created by {{quiz.owner}}<br>
+    <a href="{% url 'play' quiz.id %}"><button class="btn btn-outline-primary">Play</button></a>
 </div>
 {% endfor %}
 {% endblock %}

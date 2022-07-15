@@ -29,7 +29,10 @@ class Response(models.Model):
 class Choices(models.Model):
         choice = models.CharField(max_length=100)
         question_id = models.IntegerField(default=1)
+class TextAnswer(models.Model):
+        answer = models.CharField(max_length=1000)
+        question_id = models.IntegerField()
 class RightAnswer(models.Model):
-        answer = models.CharField(max_length=1000, default="Answer")
+        answer = models.ForeignKey(TextAnswer, on_delete=models.CASCADE)
         choice = models.ForeignKey(Choices, on_delete=models.CASCADE, blank=True, null=True)
         quiz_id = models.IntegerField(default=1)

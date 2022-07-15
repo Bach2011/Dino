@@ -38,7 +38,11 @@ input:hover , input[type="checkbox"]:hover{
 }
 div {
     font-size: large;
+    margin-bottom: 10px;
 }
 input {
     background-color: #f5f5f5;
+}   
+i {
+    margin-top: 13px;
 }

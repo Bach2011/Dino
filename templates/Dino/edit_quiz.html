@@ -1,16 +1,21 @@
 {% extends 'Dino/layout.html' %}
 {% block body %}
-<h3>{{quiz.name}}</h3>
+<form action="{% url 'edit_quiz' quiz.id %}" method="POST" class="edit_name">
+    <input type="text" name="name" value="{{quiz.name}}">
+</form><br>
+<h3>{{quiz.name}}</h3><button class="edit_quiz_name btn btn-primary btn-sm">
+    <i class="fa-solid fa-pen"></i>
+</button>
 <div>
 {% for question in questions %}
 <div class="question quiz">
-Question {{question.id}} : {{question.title}}
+Question {{forloop.counter}} : {{question.title}}
+<a href="{% url 'edit_question' quiz.id question.id%}" ><button class="btn btn-primary btn-sm"><i class="fa-solid fa-pen"></i></button></a>
 </div>
 {% endfor %}
 </div>
-<form action="{% url 'create_question' quiz.id %}">
-    <button type="submit" class="btn btn-primary add_question">
-        Add question
-    </button>
-    </form>
+<a href="{% url 'create_question' quiz.id %}">
+<button type="submit" class="btn btn-primary btn-sm add_question">
+    <i class="fa-solid fa-plus"></i>
+</button></a>
 {% endblock %}

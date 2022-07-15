@@ -5,8 +5,8 @@
         {% for question in questions %}
         <h2>{{question.title}}</h2>
         {% if question.type == 'choices' %}
-            {% for choice in choices.objects.filter() %}
-            <input type="radio">{ choice.title }
+            {% for choice in choices %}
+            <input type="radio">{{ choice.choice }}
             {% endfor %}
         {% else %}
             <textarea>Answer</textarea>

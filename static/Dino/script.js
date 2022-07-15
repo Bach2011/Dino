@@ -18,4 +18,9 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('input[name="correct"]').value = element.value
         })
     })
+    document.querySelector('.edit_name').style.display = 'none'
+    document.querySelector('.edit_quiz_name').addEventListener('click', function() {
+        document.querySelector('form').style.display = 'block';
+        document.querySelector('h3').style.display = 'none'
+    })
 })

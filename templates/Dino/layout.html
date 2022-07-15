@@ -11,29 +11,44 @@
      <script src="https://kit.fontawesome.com/227204e621.js" crossorigin="anonymous"></script>  
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300&display=swap" rel="stylesheet">
+<script src="{% static 'Dino/script.js' %}"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
 <script src="{% static 'Dino/script.js' %}"></script>
 
      <title>{% block title %}Dino{% endblock %}</title>
  </head>
  <body>
-
-  <nav class="navbar navbar-expand-sm bg-light">
-
-    <!-- Links -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
+<ul class="nav">
+    <li class="nav-item">
         <a class="nav-link" href="{% url 'index' %}">Dino</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'create_quiz' %}">Create Quiz</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'quizzes' %}">Created Quiz</a>
-      </li>
-    </ul>
-  </nav>
-    <hr>
+    </li>
+    {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'quizzes' %}">
+            All Quizzes
+          </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'create_quiz' %}">Create Quiz</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'my_quizzes' %}">Your Quizzes</a>
+        </li>
+        <a href="{% url 'logout' %}">
+            <li class="logout">
+                <i class="fas fa-sign-out-alt"></i>
+            </li>
+        </a>
+    {% else %}
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Log In</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'register' %}">Register</a>
+        </li>
+    {% endif %}
+</ul>
+<hr>
      {% block body %}
      {% endblock %}
  </body>
