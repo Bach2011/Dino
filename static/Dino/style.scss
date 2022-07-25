@@ -1,0 +1,79 @@
+$color1:#F0EBE3;
+$color2:#E4DCCF;
+$color3:#7D9D9C;
+$color4:#576F72;
+
+.body {
+    font-family: 'Nunito', sans-serif;
+    text-align: center;
+    margin:auto;
+    margin-top: auto;
+    margin-left: 10px;
+    background-color:#ffffff;
+    h1 {
+    font-family: 'Exo 2', sans-serif;
+    }
+}
+div{
+    text-align: center;
+    margin: auto;
+    border-radius: 4px;
+    border: none;
+    size: auto; 
+}
+textarea {
+    margin: auto;
+    border-radius: 4px;
+    border: none;
+    size: auto;
+    text-align: center;
+}
+input, select, select > option {
+    border-radius: 4px;
+    border: none;
+    padding:7px;
+    outline:none;
+}
+.quiz {
+    background-color : $color2;
+    width:600px;
+    height: auto;
+    padding:10px
+}
+button {
+    text-align: center;
+}
+input:hover , input[type="checkbox"]:hover{
+    background-color: #ffffff;
+}
+div {
+    font-size: large;
+    margin-bottom: 10px;
+}
+input {
+    background-color: #ffffff;
+}   
+i {
+    margin-top: 13px;
+    margin-left: 10px;
+}
+ul.nav , .nav-bar{
+    width: 500px;
+    margin:relative;
+    text-align: center;
+    background-color: $color3;
+}
+img {
+    margin-left: 600px;
+}
+.nav-bar {
+    .nav-item {
+        .nav-link, i {
+        color:white;
+        }
+    }
+}
+button.btn,button.btn-primary, button.btn:hover {
+    background-color: $color3;
+    border-color: $color3;
+}

@@ -1,0 +1,5 @@
+- Finish play feature
+- Finish edit question feature
+- Make the index page not boring
+- Add some more errors
+- Write something in readme.md

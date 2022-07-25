@@ -4,7 +4,7 @@
     <form action="{% url 'play' quiz.id %}" method="POST">
         {% for question in questions %}
         <h2>{{question.title}}</h2>
-        {% if question.type == 'choices' %}
+        {% if question.type == 'multiple choice' %}
             {% for choice in choices %}
             <input type="radio">{{ choice.choice }}
             {% endfor %}

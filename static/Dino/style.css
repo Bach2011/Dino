@@ -1,48 +1,85 @@
-body {
-    font-family: 'Nunito', sans-serif;
-    text-align: center;
-    margin:auto;
-    margin-top: auto;
+.body {
+  font-family: "Nunito", sans-serif;
+  text-align: center;
+  margin: auto;
+  margin-top: auto;
+  margin-left: 10px;
+  background-color: #ffffff;
 }
-div{
-    text-align: center;
-    margin: auto;
-    border-radius: 4px;
-    border: none;
-    size: auto;
+.body h1 {
+  font-family: "Exo 2", sans-serif;
 }
-textarea {
-    margin: auto;
-    border-radius: 4px;
-    border: none;
-    size: auto;
-    text-align: center;
-}
-input, select, select > option {
-    border-radius: 4px;
-    border: none;
-    padding:7px;
-    outline:none;
-}
-.quiz {
-    background-color : #b7e2e7;
-    width:600px;
-    height: auto;
-    padding:10px
-}
-button {
-    text-align: center;
-}
-input:hover , input[type="checkbox"]:hover{
-    background-color: #f3f3f3;
-}
+
 div {
-    font-size: large;
-    margin-bottom: 10px;
+  text-align: center;
+  margin: auto;
+  border-radius: 4px;
+  border: none;
+  size: auto;
 }
+
+textarea {
+  margin: auto;
+  border-radius: 4px;
+  border: none;
+  size: auto;
+  text-align: center;
+}
+
+input, select, select > option {
+  border-radius: 4px;
+  border: none;
+  padding: 7px;
+  outline: none;
+}
+
+.quiz {
+  background-color: #E4DCCF;
+  width: 600px;
+  height: auto;
+  padding: 10px;
+}
+
+button {
+  text-align: center;
+}
+
+input:hover, input[type=checkbox]:hover {
+  background-color: #ffffff;
+}
+
+div {
+  font-size: large;
+  margin-bottom: 10px;
+}
+
 input {
-    background-color: #f5f5f5;
-}   
-i {
-    margin-top: 13px;
+  background-color: #ffffff;
 }
+
+i {
+  margin-top: 13px;
+  margin-left: 10px;
+}
+
+ul.nav, .nav-bar {
+  width: 500px;
+  margin: relative;
+  text-align: center;
+  background-color: #7D9D9C;
+}
+
+img {
+  margin-left: 600px;
+}
+
+.nav-bar .nav-item .nav-link, .nav-bar .nav-item i {
+  color: white;
+}
+
+button.btn, button.btn-primary, button.btn:hover {
+  background-color: #7D9D9C;
+  border-color: #7D9D9C;
+}
+
+/*# sourceMappingURL=style.css.map */

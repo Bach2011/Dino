@@ -1,9 +1,15 @@
 {% extends 'Dino/layout.html' %}
 {% block body %}
+
 {% for quiz in quizzes %}
 <div class="quiz">
     <h3>{{ quiz.name }}</h3>
     <a href="{% url 'edit_quiz' quiz.id %}"><i class="fa-solid fa-pen"></i></a>
+    <form action="{% url 'my_quizzes' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" value="{{quiz.id}}" name="delete">
+        <button class="btn btn-danger btn-sm" type="submit" >delete</button>
+    </form>
 </div>
 {% endfor %}
 {% endblock %}

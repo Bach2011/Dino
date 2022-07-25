@@ -1,4 +1,8 @@
 {% extends "Dino/layout.html" %}
+{% load static %}
 {% block body %}
-<p>Welcome</p>
+<h1>Hello.</h1>
+<br><br>
+<a href="{% url 'quizzes' %}"><button class="btn btn-primary">Try others quizzes</button></a>
+<img src="{% static 'Dino/quiz.png' %}" width="30%">
 {% endblock %}
