@@ -1,17 +1,15 @@
 {% extends 'Dino/layout.html' %}
 {% block body %}
 <div class="quiz">
-    <form action="{% url 'play' quiz.id %}" method="POST">
-        {% for question in questions %}
+    <form action="{% url 'play' quiz.id id %}" method="POST">
+        {% csrf_token %}
         <h2>{{question.title}}</h2>
-        {% if question.type == 'multiple choice' %}
             {% for choice in choices %}
-            <input type="radio">{{ choice.choice }}
+            <input type="checkbox" name="ans ans{{forloop.counter}}" value="{{forloop.counter}}">{{ choice.choice }}<br>
             {% endfor %}
-        {% else %}
-            <textarea>Answer</textarea>
-        {% endif %}
-        {% endfor %}
+            <input type="hidden" value="" name="answer">
+            <input type="hidden" value="{{question.point}}" name="point"/>
+        <button type="submit" class="btn btn-primary">Next question</button>
     </form>
 </div>
 

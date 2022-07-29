@@ -1,28 +1,9 @@
 {% extends 'Dino/layout.html' %}
 {% block body %}
-{% if request.user == quiz.owner %}
-<form action="{% url 'quiz' quiz.id %}" method="POST" class="edit_name">
-    {% csrf_token %}
-    <input type="text" name="name" value="{{quiz.name}}">
-</form><br>
-<h3>{{quiz.name}}</h3>
-<a href="#"><i class="fa-solid fa-pen edit_quiz_name"></i></a>
-<div>
-{% for question in questions %}
-<div class="question quiz">
-Question {{forloop.counter}} : {{question.title}}
-<a href="{% url 'edit_question' quiz.id question.id%}"><i class="fa-solid fa-pen edit_quiz_name"></i></a>
-<form action="{% url 'edit_quiz' quiz.id %}" method="POST">
-    {% csrf_token %}
-    <input type="hidden" value="{{question.id}}" name="question_id">
-    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-</form>
-</div>
-{% endfor %}
-</div>
-<a href="{% url 'create_question' quiz.id %}">
-    <i class="fa-solid fa-plus"></i></a>
-{% else %}
-<h1>{{quiz.name}}</h1>
-{% endif }
+
+<p>Quiz name: {{quiz.name}}<br>
+Owner: {{quiz.owner.username}}<br>
+<a href="{% url 'play' quiz.id 1 %}"><button class="btn btn-primary">Play</button></a>
+
+</p>
 {% endblock %}

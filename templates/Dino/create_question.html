@@ -1,19 +1,12 @@
 {% extends 'Dino/layout.html' %}
 {% block body %}
 <br><br><br>
-    <div class="quiz"><br>
+    <div class="quiz" style="text-align:center;"><br>
         <form action="{% url 'create_question' id %}" method="POST">
             {% csrf_token %}
                 <h3>Question</h3>
             <input type="text" placeholder="Question" name="question"><br><br>
-            <label for="type">Type:</label>
-        <select class="type" name="type" id="type">
-                <option value="select">Multiple Choices</option>
-                <option value="text">Answer by text</option>
-            </select><br><br>
-
-            <div class="text"><textarea id="text" placeholder="Answer" style="display:none;" name="text"></textarea></div><br>
-
+            
             <div class="options" style="display:block;">
             <input type="text" class="optionA" placeholder="Answer A" name="optionA">
             <input type="checkbox" value="1">
@@ -27,6 +20,7 @@
             <input type="text" class="optionD" placeholder="Answer D" name="optionD">
             <input type="checkbox" value="4">
             <br><br>
+            <input type="number" name="point" placeholder="point">
             <input type="hidden" value="" name="correct">
             </div>
             <button type="submit" class="btn btn-primary add">Create question</button><br>
