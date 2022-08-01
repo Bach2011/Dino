@@ -3,7 +3,8 @@
 
 <p>Quiz name: {{quiz.name}}<br>
 Owner: {{quiz.owner.username}}<br>
+{% if response %}
+{% endif %}
 <a href="{% url 'play' quiz.id 1 %}"><button class="btn btn-primary">Play</button></a>
-
 </p>
 {% endblock %}

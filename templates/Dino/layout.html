@@ -39,11 +39,10 @@
         <li class="nav-item">
             <a class="nav-link" href="{% url 'my_quizzes' %}">Your Quizzes</a>
         </li>
-        <a href="{% url 'logout' %}">
-            <li class="logout">
-                <i class="fas fa-sign-out-alt"></i>
-            </li>
-        </a>
+        <li class="logout nav-item">
+            <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i></a>
+        </li>
+        
     {% else %}
         <li class="nav-item">
             <a class="nav-link" href="{% url 'login' %}">Log In</a>

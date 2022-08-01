@@ -1,0 +1,8 @@
+{% extends 'Dino/layout.html' %}
+{% block body %}
+<h4>Quiz: {{quiz.name}}<br>
+Congratulations! You got {{response.point}}/{{max_point}}
+<br>
+<a href="{% url 'quizzes' %}">Play other quizzes</a>
+</h4>
+{% endblock %}

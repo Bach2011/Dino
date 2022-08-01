@@ -7,22 +7,27 @@
             <input type="text" placeholder="Question" name="question"  value="{{question.title}}"><br><br>
     
             <div class="options" style="display:block;">
-            <input type="text" class="optionA" placeholder="Answer A" name="optionA" value="{{choices.0.choice}}">
-            <input type="checkbox" value="">
-            <br><br>
-            <input type="text" class="optionB" placeholder="Answer B" name="optionB" value="{{choices.1.choice}}">
-            <input type="checkbox" value="">
-            <br><br>
-            <input type="text" class="optionC" placeholder="Answer C" name="optionC" value="{{choices.2.choice}}">
-            <input type="checkbox" value="">
-            <br><br>
-            <input type="text" class="optionD" placeholder="Answer D" value="{{choices.3.choice}}">
-            <input type="checkbox" value="">
+                {% for choice in choices %}
+                <input type="text" value="{{choice.choice}}" name="option{{forloop.counter}}" class="option{{forloop.counter}}">
+                {% if choice.true %}
+                <input type="checkbox" value="" class="choice" checked>
+                {% else %}
+                <input type="checkbox" value="" class="choice" >
+                {% endif %}
+                <br><br>
+                {% endfor %}
             <br><br>
             <input type="number" name="point" placeholder="point" value="{{question.point}}">
-            <input type="hidden" value="" name="correct">
+            <input type="hidden" value="" name="correct" class="correctID">
             </div>
             <button type="submit" class="btn btn-primary add">Save</button><br>
         </form> 
     </div>
+    <script>
+        document.querySelectorAll("input.choice").forEach(element => {
+        element.addEventListener('click', function() {
+            document.querySelector('input.correctID').value = element.value
+        })
+    }) 
+    </script>
 {% endblock %}

@@ -17,7 +17,7 @@ class Quiz(models.Model):
                 return f"{self.id} Quiz: {self.name}"
 class Answer(models.Model):
         choices_id = models.IntegerField()
-        true = models.BooleanField(default=True)
+        true = models.BooleanField(default=False)
         quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, name="quiz", blank=True, null=True)
         
 class Response(models.Model):

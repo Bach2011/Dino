@@ -5,12 +5,18 @@
         {% csrf_token %}
         <h2>{{question.title}}</h2>
             {% for choice in choices %}
-            <input type="checkbox" name="ans ans{{forloop.counter}}" value="{{forloop.counter}}">{{ choice.choice }}<br>
+            <input type="checkbox" name="ans{{forloop.counter}}" value="{{forloop.counter}}" class="answer">{{ choice.choice }}<br>
             {% endfor %}
             <input type="hidden" value="" name="answer">
             <input type="hidden" value="{{question.point}}" name="point"/>
         <button type="submit" class="btn btn-primary">Next question</button>
     </form>
 </div>
-
+<script>
+    document.querySelectorAll('.answer').forEach(element => {
+        element.addEventListener("click", () => {
+            document.querySelector("input[name='answer']").value = element.value
+        })
+    })
+</script>
 {% endblock %}

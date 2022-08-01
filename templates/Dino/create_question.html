@@ -5,25 +5,25 @@
         <form action="{% url 'create_question' id %}" method="POST">
             {% csrf_token %}
                 <h3>Question</h3>
-            <input type="text" placeholder="Question" name="question"><br><br>
+            <input type="text" placeholder="Question" name="question" autofocus><br><br>
             
             <div class="options" style="display:block;">
-            <input type="text" class="optionA" placeholder="Answer A" name="optionA">
-            <input type="checkbox" value="1">
+            {% for i in a %}
+            <input type="text" class="option{{i|add:1}}" placeholder="Answer{{i|add:1}}" name="option{{i|add:1}}">
+            <input type="checkbox" value="{{i|add:1}}" class="choice">
             <br><br>
-            <input type="text" class="optionB" placeholder="Answer B" name="optionB">
-            <input type="checkbox" value="2">
-            <br><br>
-            <input type="text" class="optionC" placeholder="Answer C" name="optionC">
-            <input type="checkbox" value="3">
-            <br><br>
-            <input type="text" class="optionD" placeholder="Answer D" name="optionD">
-            <input type="checkbox" value="4">
-            <br><br>
+            {% endfor %}
             <input type="number" name="point" placeholder="point">
-            <input type="hidden" value="" name="correct">
+            <input type="hidden" value="" name="correct" class="correctID">
             </div>
             <button type="submit" class="btn btn-primary add">Create question</button><br>
         </form> 
     </div>
+    <script>
+        document.querySelectorAll("input.choice").forEach(element => {
+        element.addEventListener('click', function() {
+            document.querySelector('input.correctID').value = element.value
+        })
+    })
+    </script>
 {% endblock %}

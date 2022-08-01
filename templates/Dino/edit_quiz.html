@@ -25,4 +25,11 @@ Question {{forloop.counter}} : {{question.title}}
 {% else %} 
 <div class="alert alert-danger">Quiz not found</div>
 {% endif %}
+<script>
+    document.querySelector('.edit_name').style.display = 'none'
+    document.querySelector('.edit_quiz_name').addEventListener('click', function() {
+        document.querySelector('form').style.display = 'block';
+        document.querySelector('h3').style.display = 'none'
+    })  
+</script>
 {% endblock %}
