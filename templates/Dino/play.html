@@ -1,15 +1,17 @@
 {% extends 'Dino/layout.html' %}
 {% block body %}
-<div class="quiz">
+<div class="playing-quiz">
     <form action="{% url 'play' quiz.id id %}" method="POST">
         {% csrf_token %}
         <h2>{{question.title}}</h2>
             {% for choice in choices %}
+            <div class="checkbox">
             <input type="checkbox" name="ans{{forloop.counter}}" value="{{forloop.counter}}" class="answer">{{ choice.choice }}<br>
+            </div>
             {% endfor %}
             <input type="hidden" value="" name="answer">
             <input type="hidden" value="{{question.point}}" name="point"/>
-        <button type="submit" class="btn btn-primary">Next question</button>
+        <button type="submit" class="btn btn-primary next">Next question</button>
     </form>
 </div>
 <script>

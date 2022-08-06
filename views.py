@@ -69,30 +69,31 @@ def register(request):
 @login_required
 def play(request,id, question_order):
     if request.method == "POST":
-        # getting the resources
-        answer = int(request.POST.get('answer'))
-        question_id = Question.objects.filter(quiz_id=id)[question_order-1].id
-        answer = Choices.objects.filter(question_id=question_id)[answer-1]
-        point = int(request.POST.get('point'))
-        # Adding point to response
-        if answer.true == True:
-            Answer.objects.create(choices_id=answer.id, quiz=Quiz.objects.get(pk=id), true=True)
-        else:
-            Answer.objects.create(choices_id=answer.id, quiz=Quiz.objects.get(pk=id), true=False)
-        # Check if Response object already exist to create a new one
-        if Response.objects.filter(quiz_id=id, user=request.user).exists():
-            response = Response.objects.get(quiz_id=id,user=request.user)
-            response.point += point
-            response.answer.add(Answer.objects.last())
-        else:
-            response = Response.objects.create(quiz_id=id, point=point, user=request.user)
-            response.answer.add(Answer.objects.last())
-
-        # Check if it is the last question 
-        if Question.objects.filter(quiz_id=id).last() == Question.objects.get(pk=question_id):
-            return HttpResponseRedirect(reverse("result", args=[id]))
-        else:
-            return HttpResponseRedirect(reverse("play", args=[id,question_order+1]))
+        try:
+            # getting the resources
+            answer = int(request.POST.get('answer'))
+            question_id = Question.objects.filter(quiz_id=id)[question_order-1].id
+            answer = Choices.objects.filter(question_id=question_id)[answer-1]
+            point = int(request.POST.get('point'))
+            if answer.true == True:
+                Answer.objects.create(choices_id=answer.id, quiz=Quiz.objects.get(pk=id), true=True)
+            else:
+                Answer.objects.create(choices_id=answer.id, quiz=Quiz.objects.get(pk=id), true=False)
+            if question_order != 1:
+                response = Response.objects.get(quiz_id=id,user=request.user)
+                response.point += point
+                response.answer.add(Answer.objects.last())
+            else:
+                response = Response.objects.create(quiz_id=id, point=point, user=request.user)
+                response.answer.add(Answer.objects.last())
+            if Question.objects.filter(quiz_id=id).last() == Question.objects.get(pk=question_id):
+                return HttpResponseRedirect(reverse("result", args=[id]))
+            else:
+                return HttpResponseRedirect(reverse("play", args=[id,question_order+1]))
+        except Exception as e:
+            return render(request, "Dino/error/html", {
+                "error": e
+            })
     else:
         try:
             question = Question.objects.filter(quiz_id=id)[question_order-1]
@@ -102,16 +103,17 @@ def play(request,id, question_order):
                 "choices": Choices.objects.filter(question_id=question.id),
                 "id":question_order
             })
-        except:
+        except Exception as e:
             return render(request, "Dino/error.html", {
-                "error":"Question/quiz not found"
+                "error": e
             })
 def quiz(request, id):
     try:
         response = Response.objects.get(quiz_id=id)
         return render(request, "Dino/quiz.html", {
             "quiz": Quiz.objects.get(id=id),
-            "response":response
+            "response":response,
+            "answers": response.answer.all(),
         })
     except Response.DoesNotExist:
         return render(request, "Dino/quiz.html", {
@@ -119,45 +121,63 @@ def quiz(request, id):
         })
     except:
         return render(request, "Dino/error.html", {
-            "error": "quiz not found"
+            "error": "An error occured"
         })
 @login_required
 def create_question(request, id):
-    if request.method == "POST":
-        name = request.POST.get('question')
-        correct = int(request.POST.get('correct'))
-        point = request.POST.get('point')
-        choices = []
-        # getting the choices
-        for i in range(4):
-            choices.append(request.POST.get(f"option{i+1}"))
-        # creating choice objects
-        for choice in choices:
-            if choice == choices[correct-1]:
-                Choices.objects.create(question_id=Question.objects.last().id + 1, choice=choice, true=True)
-            else:
-                Choices.objects.create(question_id=Question.objects.last().id + 1, choice=choice)
-        # create question
-        Question.objects.create(title=name, quiz_id=id, point=point)
-        quiz = Quiz.objects.get(pk=id)
-        quiz.question.add(Question.objects.last())
-        return HttpResponseRedirect(reverse('edit_quiz',args=[id]))
-    else:
-        return render(request, "Dino/create_question.html", {
-            "id":id,
-            "a": range(4)
+    try:
+        if request.method == "POST":
+            name = request.POST.get('question')
+            correct = int(request.POST.get('correct'))
+            point = request.POST.get('point')
+            choices = []
+            # getting the choices
+            for i in range(4):
+                choices.append(request.POST.get(f"option{i+1}"))
+            # creating choice objects
+            for choice in choices:
+                if choice == choices[correct-1]:
+                    try:
+                        Choices.objects.create(question_id=Question.objects.last().id + 1, choice=choice, true=True)
+                    except:
+                        Choices.objects.create(question_id=1, choice=choice, true=True)
+                else:
+                    try:
+                        Choices.objects.create(question_id=Question.objects.last().id + 1, choice=choice)
+                    except:
+                        Choices.objects.create(question_id=1, choice=choice)
+            # create question
+            Question.objects.create(title=name, quiz_id=id, point=point)
+            quiz = Quiz.objects.get(pk=id)
+            quiz.question.add(Question.objects.last())
+            quiz.max_point = quiz.max_point + Question.objects.last().point
+            quiz.save()
+            return HttpResponseRedirect(reverse('edit_quiz',args=[id]))
+        else:
+            return render(request, "Dino/create_question.html", {
+                "id":id,
+                "a": range(4)
+            })
+    except Exception as e:
+        return render(request, "Dino/error.html", {
+            "error": e
         })
 @login_required
 def create_quiz(request):
-    if request.method == "POST":
-        name = request.POST.get('name')
-        Quiz.objects.create(name=name, owner=request.user)
-        if Quiz.objects.all().exists():
-            return redirect(reverse('edit_quiz', args=[Quiz.objects.last().id]))
+    try:
+        if request.method == "POST":
+            name = request.POST.get('name')
+            Quiz.objects.create(name=name, owner=request.user)
+            if Quiz.objects.all().exists():
+                return redirect(reverse('edit_quiz', args=[Quiz.objects.last().id]))
+            else:
+                return redirect(reverse("edit_quiz", args=1))
         else:
-            return redirect(reverse("edit_quiz", args=1))
-    else:
-        return render(request,"Dino/create_quiz.html")
+            return render(request,"Dino/create_quiz.html")
+    except Exception as e:
+        return render(request, "Dino/error.html", {
+            "error": e
+        })
 @login_required
 def edit_quiz(request, id):
     try:
@@ -178,58 +198,73 @@ def edit_quiz(request, id):
             'questions': Question.objects.filter(quiz_id=id),
             'quiz':Quiz.objects.get(id=id, owner=request.user),
             })
-    except:
+    except Exception as e:
         return render(request, "Dino/error.html", {
-            "error":"Quiz not found!"
+            "error":e
         })
 @login_required
 def my_quizzes(request):
-    if request.method == "POST":
-        quiz_id = request.POST.get('delete')
-        quiz = Quiz.objects.get(pk=quiz_id)
-        quiz.delete()
-        return HttpResponseRedirect(reverse("my_quizzes"))
-    else:
-        return render(request,"Dino/my_quizzes.html", {
-            'quizzes': Quiz.objects.filter(owner=request.user)
+    try:
+        if request.method == "POST":
+            quiz_id = request.POST.get('delete')
+            quiz = Quiz.objects.get(pk=quiz_id)
+            quiz.delete()
+            return HttpResponseRedirect(reverse("my_quizzes"))
+        else:
+            return render(request,"Dino/my_quizzes.html", {
+                'quizzes': Quiz.objects.filter(owner=request.user)
+            })
+    except Exception as e:
+        return render(request, "Dino/error.html", {
+            "error": e
         })
 @login_required
 def edit_question(request,id, quiz_id):
-    quiz = Quiz.objects.get(owner=request.user, id=quiz_id)
-    question = Question.objects.get(quiz_id=quiz.id, id=id)
-    choice = Choices.objects.filter(question_id=id)
-    if request.method == "POST":
-        choices = []
-        for i in range(4):
-            choices.append(request.POST.get(f"option{i+1}"))
-        title = request.POST.get("question")
-        question.title = title
-        question.save()
-        for i,new_choice in enumerate(choices):
-            choice = Choices.objects.filter(question_id=id)[i]
-            choice.choice = new_choice
-            choice.save()
-        return HttpResponseRedirect(reverse("edit_quiz",args=[quiz_id]))
-    else:
-
-        return render(request,"Dino/edit_question.html", {
-                        "quiz":Quiz.objects.get(id=quiz_id),
-                        "question":question,
-                        "choices": choice
-                    })
+    try: 
+        quiz = Quiz.objects.get(owner=request.user, id=quiz_id)
+        question = Question.objects.get(quiz_id=quiz.id, id=id)
+        choice = Choices.objects.filter(question_id=id)
+        if request.method == "POST":
+            choices = []
+            for i in range(4):
+                choices.append(request.POST.get(f"option{i+1}"))
+            title = request.POST.get("question")
+            question.title = title
+            question.save()
+            for i,new_choice in enumerate(choices):
+                choice = Choices.objects.filter(question_id=id)[i]
+                choice.choice = new_choice
+                choice.save()
+            return HttpResponseRedirect(reverse("edit_quiz",args=[quiz_id]))
+        else:
+            return render(request,"Dino/edit_question.html", {
+                            "quiz":Quiz.objects.get(id=quiz_id),
+                            "question":question,
+                            "choices": choice
+                        })
+    except Exception as e:
+        return render(request, "Dino/error.html", {
+            "error":e
+        })
 @login_required
 def quizzes(request):
-    return render(request, "Dino/quizzes.html", {
-        "quizzes":Quiz.objects.all()
-    })
+    try:
+        return render(request, "Dino/quizzes.html", {
+            "quizzes":Quiz.objects.all()
+        })
+    except Exception as e:
+        return render(request, "Dino/error.html", {
+            "error": e
+        })
 def result(request,id):
-    questions = Question.objects.filter(quiz_id=id)
-    max_point = 0
-    response = Response.objects.filter(user=request.user, quiz_id=id)
-    for question in questions:
-        max_point += question.point
-    return render(request, "Dino/result.html", {
-        "quiz": Quiz.objects.filter(owner=request.user),
-        "response": response,
-        "max_point": max_point
-    })
+    try:
+        response = Response.objects.filter(user=request.user, quiz_id=id)
+        return render(request, "Dino/result.html", {
+            "quiz": Quiz.objects.filter(owner=request.user),
+            "response": response,
+            "max_point": Quiz.objects.get(id=id).max_point
+        })
+    except Exception as e:
+        return render(request, "Dino/error.html", {
+            "error": e
+        })

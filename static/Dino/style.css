@@ -1,10 +1,13 @@
+* {
+  font-weight: 550;
+}
+
 .body {
   font-family: "Nunito", sans-serif;
   text-align: center;
   margin: auto;
   margin-top: auto;
   margin-left: 10px;
-  background-color: #ffffff;
 }
 .body h1 {
   font-family: "Exo 2", sans-serif;
@@ -26,18 +29,22 @@ textarea {
   text-align: center;
 }
 
-input, select, select > option {
-  border-radius: 4px;
-  border: none;
-  padding: 7px;
+input[name=name] {
+  border-radius: 7px;
+  text-align: center;
+  height: 40px;
+  width: 40%;
   outline: none;
+  border-width: 2px;
 }
 
-.quiz {
+.quiz, .playing-quiz {
   background-color: #E4DCCF;
   width: 600px;
   height: auto;
   padding: 10px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  flex-wrap: wrap;
 }
 
 button {
@@ -50,16 +57,13 @@ input:hover, input[type=checkbox]:hover {
 
 div {
   font-size: large;
-  margin-bottom: 10px;
-}
-
-input {
-  background-color: #ffffff;
+  margin-bottom: 15px;
 }
 
 i {
   margin-top: 13px;
   margin-left: 10px;
+  color: #576F72;
 }
 
 ul.nav, .nav-bar {
@@ -80,6 +84,36 @@ img {
 button.btn, button.btn-primary, button.btn:hover {
   background-color: #7D9D9C;
   border-color: #7D9D9C;
+  outline: none;
+}
+
+a button.btn {
+  color: white;
+}
+
+.checkbox {
+  align-items: center;
+  width: 80%;
+  padding: 12px;
+  height: 50px;
+  font-size: 20px;
+  text-align: center;
+  display: flex;
+}
+.checkbox input.answer {
+  width: 40px;
+  height: 20px;
+}
+
+.order {
+  margin-left: 10px;
+  width: 30px;
+  border-radius: 25px;
+  background-color: #3ad664;
+}
+
+.answer:hover {
+  background-color: #28c745;
 }
 
 /*# sourceMappingURL=style.css.map */
