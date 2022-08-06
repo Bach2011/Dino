@@ -10,9 +10,9 @@
                 {% for choice in choices %}
                 <input type="text" value="{{choice.choice}}" name="option{{forloop.counter}}" class="option{{forloop.counter}}">
                 {% if choice.true %}
-                <input type="checkbox" value="" class="choice" checked>
+                    <input class="form-check-input choice" type="radio" name="exampleRadios" id="exampleRadios1" value="" checked>
                 {% else %}
-                <input type="checkbox" value="" class="choice" >
+                    <input class="form-check-input choice" type="radio" name="exampleRadios" id="exampleRadios1" value="">
                 {% endif %}
                 <br><br>
                 {% endfor %}

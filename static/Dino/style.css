@@ -19,6 +19,9 @@ div {
   border-radius: 4px;
   border: none;
   size: auto;
+  flex-direction: column;
+  flex: auto;
+  flex-wrap: wrap;
 }
 
 textarea {
@@ -68,13 +71,8 @@ i {
 
 ul.nav, .nav-bar {
   width: 500px;
-  margin: relative;
   text-align: center;
   background-color: #7D9D9C;
-}
-
-img {
-  margin-left: 600px;
 }
 
 .nav-bar .nav-item .nav-link, .nav-bar .nav-item i {
@@ -103,17 +101,6 @@ a button.btn {
 .checkbox input.answer {
   width: 40px;
   height: 20px;
-}
-
-.order {
-  margin-left: 10px;
-  width: 30px;
-  border-radius: 25px;
-  background-color: #3ad664;
-}
-
-.answer:hover {
-  background-color: #28c745;
 }
 
 /*# sourceMappingURL=style.css.map */

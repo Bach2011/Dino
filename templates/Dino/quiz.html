@@ -3,7 +3,7 @@
 <h4>Quiz name: {{quiz.name}}<br>
 Owner: {{quiz.owner.username}}<br>
 {% if response %}
-Overal Score: {{response.point}} / {{quiz.max_point}}
+<a href="{% url 'result' quiz.id %}"><button class="btn btn-primary">Result</button></a>
 {% else %}
 <a href="{% url 'play' quiz.id 1 %}"><button class="btn btn-primary">Play</button></a>
 {% endif %}

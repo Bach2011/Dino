@@ -1,3 +1,1 @@
-- Make the index page not boring
-- Add some more errors
 - Write something in readme.md

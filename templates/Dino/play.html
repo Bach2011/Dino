@@ -5,9 +5,10 @@
         {% csrf_token %}
         <h2>{{question.title}}</h2>
             {% for choice in choices %}
-            <div class="checkbox">
-            <input type="checkbox" name="ans{{forloop.counter}}" value="{{forloop.counter}}" class="answer">{{ choice.choice }}<br>
-            </div>
+                <input class="form-check-input answer" type="radio" name="exampleRadios" id="exampleRadios1" value="{{forloop.counter}}">
+                <label class="form-check-label answer" for="exampleRadios1">
+                  {{choice.choice}}
+                </label>
             {% endfor %}
             <input type="hidden" value="" name="answer">
             <input type="hidden" value="{{question.point}}" name="point"/>

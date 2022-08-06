@@ -76,7 +76,7 @@ def play(request,id, question_order):
             answer = Choices.objects.filter(question_id=question_id)[answer-1]
             point = int(request.POST.get('point'))
             if answer.true == True:
-                Answer.objects.create(choices_id=answer.id, quiz=Quiz.objects.get(pk=id), true=True)
+                Answer.objects.create(choices_id=answer.id, quiz=Quiz.objects.get(pk=id), true=True, response_id=Response.objects.last().id+1)
             else:
                 Answer.objects.create(choices_id=answer.id, quiz=Quiz.objects.get(pk=id), true=False)
             if question_order != 1:
@@ -91,7 +91,7 @@ def play(request,id, question_order):
             else:
                 return HttpResponseRedirect(reverse("play", args=[id,question_order+1]))
         except Exception as e:
-            return render(request, "Dino/error/html", {
+            return render(request, "Dino/error.html", {
                 "error": e
             })
     else:
@@ -109,19 +109,18 @@ def play(request,id, question_order):
             })
 def quiz(request, id):
     try:
-        response = Response.objects.get(quiz_id=id)
+        response = Response.objects.get(quiz_id=id, user=request.user)
         return render(request, "Dino/quiz.html", {
             "quiz": Quiz.objects.get(id=id),
             "response":response,
-            "answers": response.answer.all(),
         })
     except Response.DoesNotExist:
         return render(request, "Dino/quiz.html", {
             "quiz": Quiz.objects.get(id=id)
         })
-    except:
+    except Exception as e:
         return render(request, "Dino/error.html", {
-            "error": "An error occured"
+            "error": e
         })
 @login_required
 def create_question(request, id):
@@ -249,8 +248,12 @@ def edit_question(request,id, quiz_id):
 @login_required
 def quizzes(request):
     try:
+        quizzes = []
+        for quiz in Quiz.objects.all():
+            if Question.objects.filter(quiz_id=quiz.id).count() != 0:
+                quizzes.append(quiz)
         return render(request, "Dino/quizzes.html", {
-            "quizzes":Quiz.objects.all()
+            "quizzes":quizzes
         })
     except Exception as e:
         return render(request, "Dino/error.html", {
@@ -258,11 +261,11 @@ def quizzes(request):
         })
 def result(request,id):
     try:
-        response = Response.objects.filter(user=request.user, quiz_id=id)
+        response = Response.objects.get(user=request.user, quiz_id=id)
         return render(request, "Dino/result.html", {
-            "quiz": Quiz.objects.filter(owner=request.user),
+            "quiz": Quiz.objects.get(pk=id),
             "response": response,
-            "max_point": Quiz.objects.get(id=id).max_point
+            "max_point": Quiz.objects.get(id=id).max_point,
         })
     except Exception as e:
         return render(request, "Dino/error.html", {
