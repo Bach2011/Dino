@@ -83,6 +83,7 @@ def play(request,id, question_order):
                 response = Response.objects.get(quiz_id=id,user=request.user)
                 response.point += point
                 response.answer.add(Answer.objects.last())
+                response.save()
             else:
                 response = Response.objects.create(quiz_id=id, point=point, user=request.user)
                 response.answer.add(Answer.objects.last())

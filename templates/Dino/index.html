@@ -5,8 +5,9 @@
 <h4>
 <a href="{% url 'quizzes' %}">Try out some quiz</a> or 
 <a href="{% url 'create_quiz' %}">create your own</a>
-{% else %}
-<a href="{% url 'login' %}">Login to see more interesting feature</a>
-{% endif %}
 </h4>
+{% else %}
+<h4>
+<a href="{% url 'login' %}">Login to see more interesting feature</a></h4>
+{% endif %}
 {% endblock %}
