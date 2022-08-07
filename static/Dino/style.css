@@ -79,7 +79,7 @@ ul.nav, .nav-bar {
   color: white;
 }
 
-button.btn, button.btn-primary, button.btn:hover {
+button.btn, button.btn-primary, button.btn:hover, button.btn-primary[disabled] {
   background-color: #7D9D9C;
   border-color: #7D9D9C;
   outline: none;

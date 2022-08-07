@@ -8,11 +8,11 @@
     
             <div class="options" style="display:block;">
                 {% for choice in choices %}
-                <input type="text" value="{{choice.choice}}" name="option{{forloop.counter}}" class="option{{forloop.counter}}">
+                <input type="text" value="{{choice.choice}}" name="option{{forloop.counter}}" class="option{{forloop.counter}}" required>
                 {% if choice.true %}
-                    <input class="form-check-input choice" type="radio" name="exampleRadios" id="exampleRadios1" value="" checked>
+                    <input class="form-check-input choice" type="radio" name="exampleRadios" id="exampleRadios1" value="{{forloop.counter0}}" checked>
                 {% else %}
-                    <input class="form-check-input choice" type="radio" name="exampleRadios" id="exampleRadios1" value="">
+                    <input class="form-check-input choice" type="radio" name="exampleRadios" id="exampleRadios1" value="{{forloop.counter0}}" required>
                 {% endif %}
                 <br><br>
                 {% endfor %}
@@ -21,9 +21,12 @@
             <input type="hidden" value="" name="correct" class="correctID">
             </div>
             <button type="submit" class="btn btn-primary add">Save</button><br>
-        </form> 
+        </form> <Br>
     </div>
     <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelector('.correctID').value = document.querySelector('input[checked]').value
+        })
         document.querySelectorAll("input.choice").forEach(element => {
         element.addEventListener('click', function() {
             document.querySelector('input.correctID').value = element.value

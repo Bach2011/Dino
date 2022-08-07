@@ -5,19 +5,20 @@
         <form action="{% url 'create_question' id %}" method="POST">
             {% csrf_token %}
                 <h3>Question</h3>
-            <input type="text" placeholder="Question" name="question" autofocus><br><br>
+            <input type="text" placeholder="Question" name="question" autofocus required><br><br>
             
             <div class="options" style="display:block;">
             {% for i in a %}
-            <input type="text" class="option{{i|add:1}}" placeholder="Answer{{i|add:1}}" name="option{{i|add:1}}">
-            <input type="checkbox" value="{{i|add:1}}" class="choice">
+            <input type="text" class="option{{i}} " placeholder="Answer{{i}}" name="option{{i}}" required>
+            
+            <input type="radio" value="{{i}}" class="form-check-input choice" name="exampleRadios" id="exampleRadios1" checked>
             <br><br>
             {% endfor %}
-            <input type="number" name="point" placeholder="point">
-            <input type="hidden" value="" name="correct" class="correctID">
+            <input type="number" name="point" placeholder="point" required>
+            <input type="hidden" value="4" name="correct" class="correctID">
             </div>
             <button type="submit" class="btn btn-primary add">Create question</button><br>
-        </form> 
+        </form><br>
     </div>
     <script>
         document.querySelectorAll("input.choice").forEach(element => {

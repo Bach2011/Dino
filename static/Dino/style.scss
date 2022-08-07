@@ -75,7 +75,7 @@ ul.nav , .nav-bar{
         }
     }
 }
-button.btn,button.btn-primary, button.btn:hover {
+button.btn,button.btn-primary, button.btn:hover, button.btn-primary[disabled] {
     background-color: $color3;
     border-color: $color3;
     outline:none;

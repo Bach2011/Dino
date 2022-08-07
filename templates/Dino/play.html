@@ -5,15 +5,17 @@
         {% csrf_token %}
         <h2>{{question.title}}</h2>
             {% for choice in choices %}
-                <input class="form-check-input answer" type="radio" name="exampleRadios" id="exampleRadios1" value="{{forloop.counter}}">
+                <input class="form-check-input answer" type="radio" name="exampleRadios" id="exampleRadios1" value="{{forloop.counter}}" checked>
                 <label class="form-check-label answer" for="exampleRadios1">
                   {{choice.choice}}
                 </label>
+                <br>
             {% endfor %}
-            <input type="hidden" value="" name="answer">
+            <input type="hidden" value="3" name="answer">
             <input type="hidden" value="{{question.point}}" name="point"/>
         <button type="submit" class="btn btn-primary next">Next question</button>
-    </form>
+    </form><br>
+
 </div>
 <script>
     document.querySelectorAll('.answer').forEach(element => {

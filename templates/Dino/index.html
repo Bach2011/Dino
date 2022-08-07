@@ -1,8 +1,12 @@
-{% extends "Dino/layout.html" %}
-{% load static %}
+{% extends 'Dino/layout.html' %}
 {% block body %}
-<h1>Hi</h1>
-<br><br>
-<a href="{% url 'quizzes' %}"><button class="btn btn-primary">Try some quizzes</button></a>
-<img src="{% static 'Dino/quiz.png' %}" width="30%" style="display:flex;flex:warp;">
+{% if request.user.is_authenticated %}
+<h3>Welcome, {{request.user}}</h3>
+<h4>
+<a href="{% url 'quizzes' %}">Try out some quiz</a> or 
+<a href="{% url 'create_quiz' %}">create your own</a>
+{% else %}
+<a href="{% url 'login' %}">Login to see more interesting feature</a>
+{% endif %}
+</h4>
 {% endblock %}

@@ -133,6 +133,7 @@ def create_question(request, id):
             # getting the choices
             for i in range(4):
                 choices.append(request.POST.get(f"option{i+1}"))
+            print(choices)
             # creating choice objects
             for choice in choices:
                 if choice == choices[correct-1]:
@@ -155,7 +156,7 @@ def create_question(request, id):
         else:
             return render(request, "Dino/create_question.html", {
                 "id":id,
-                "a": range(4)
+                "a": range(1,5)
             })
     except Exception as e:
         return render(request, "Dino/error.html", {
@@ -185,6 +186,9 @@ def edit_quiz(request, id):
             if new_name == "" or new_name == "None":
                 question_id = request.POST.get('question_id')
                 question = Question.objects.get(id=question_id)
+                quiz = Quiz.objects.get(id=id)
+                quiz.max_point -= question.point
+                quiz.save()
                 question.delete()
                 return HttpResponseRedirect(reverse("edit_quiz", args=[id]))
             else:
@@ -224,16 +228,24 @@ def edit_question(request,id, quiz_id):
         question = Question.objects.get(quiz_id=quiz.id, id=id)
         choice = Choices.objects.filter(question_id=id)
         if request.method == "POST":
+            point = request.POST.get('point')
             choices = []
             for i in range(4):
                 choices.append(request.POST.get(f"option{i+1}"))
             title = request.POST.get("question")
             question.title = title
+            question.point = point
             question.save()
             for i,new_choice in enumerate(choices):
                 choice = Choices.objects.filter(question_id=id)[i]
-                choice.choice = new_choice
-                choice.save()
+                if choice == Choices.objects.filter(question_id=id)[int(request.POST.get('correct'))]:
+                    choice.true = True
+                    choice.choice = new_choice
+                    choice.save()
+                else:
+                    choice.true = False
+                    choice.choice = new_choice
+                    choice.save()
             return HttpResponseRedirect(reverse("edit_quiz",args=[quiz_id]))
         else:
             return render(request,"Dino/edit_question.html", {
