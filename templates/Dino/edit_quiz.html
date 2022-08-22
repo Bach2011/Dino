@@ -1,6 +1,7 @@
 {% extends 'Dino/layout.html' %}
 {% block body %}
 {% if request.user == quiz.owner %}
+<div class="edit_quiz">
 <form action="{% url 'edit_quiz' quiz.id %}" method="POST" class="edit_name">
     {% csrf_token %}
     <input type="text" name="name" value="{{quiz.name}}">
@@ -25,11 +26,23 @@ Question {{forloop.counter}} : {{question.title}}
 {% else %} 
 <div class="alert alert-danger">Quiz not found</div>
 {% endif %}
+</div><br>
+
+{% if responses %}
+<h3>Responses</h3>
+<div class="responses">
+    {% for response in responses %}
+    <div class="quiz">
+        <a href="{% url 'response' response.id %}">Response from {{response.user.username}}</a>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
 <script>
     document.querySelector('.edit_name').style.display = 'none'
     document.querySelector('.edit_quiz_name').addEventListener('click', function() {
         document.querySelector('form').style.display = 'block';
         document.querySelector('h3').style.display = 'none'
-    })  
+    })
 </script>
 {% endblock %}

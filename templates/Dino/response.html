@@ -1,0 +1,7 @@
+{% extends 'Dino/layout.html' %}
+{% block body %}
+<h2>Response for {{quiz.name}} quiz</h2>
+<h5>User: {{response.user.username}}<br>
+Score: {{response.point}} / {{quiz.max_point}}<br>
+{{percent}} correct
+{% endblock %}

@@ -1,5 +1,6 @@
 {% extends 'Dino/layout.html' %}
 {% block body %}
+{% if quizzes %}
 {% for quiz in quizzes %}
 <div class="quiz">
     <h3>{{ quiz.name }}</h3>
@@ -11,4 +12,7 @@
     </form>
 </div>
 {% endfor %}
+{% else %}
+<div class="alert alert-danger">You haven't create any quiz. <a href="{% url 'create_quiz' %}">Create one</a></div>
+{% endif %}
 {% endblock %}

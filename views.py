@@ -75,17 +75,20 @@ def play(request,id, question_order):
             question_id = Question.objects.filter(quiz_id=id)[question_order-1].id
             answer = Choices.objects.filter(question_id=question_id)[answer-1]
             point = int(request.POST.get('point'))
-            if answer.true == True:
+            if answer.true:
                 Answer.objects.create(choices_id=answer.id, quiz=Quiz.objects.get(pk=id), true=True, response_id=Response.objects.last().id+1)
             else:
                 Answer.objects.create(choices_id=answer.id, quiz=Quiz.objects.get(pk=id), true=False)
-            if question_order != 1:
+            if question_order != 1 and Answer.objects.last().true == True:
                 response = Response.objects.get(quiz_id=id,user=request.user)
                 response.point += point
                 response.answer.add(Answer.objects.last())
                 response.save()
             else:
-                response = Response.objects.create(quiz_id=id, point=point, user=request.user)
+                if Answer.objects.last().true:
+                    response = Response.objects.create(quiz_id=id, point=point, user=request.user)
+                else:
+                    response = Response.objects.create(quiz_id=id, point=0, user=request.user)
                 response.answer.add(Answer.objects.last())
             if Question.objects.filter(quiz_id=id).last() == Question.objects.get(pk=question_id):
                 return HttpResponseRedirect(reverse("result", args=[id]))
@@ -134,7 +137,6 @@ def create_question(request, id):
             # getting the choices
             for i in range(4):
                 choices.append(request.POST.get(f"option{i+1}"))
-            print(choices)
             # creating choice objects
             for choice in choices:
                 if choice == choices[correct-1]:
@@ -198,9 +200,12 @@ def edit_quiz(request, id):
                 quiz.save()
                 return HttpResponseRedirect(reverse("edit_quiz", args=[id]))
         else:
+            responses = Response.objects.filter(quiz_id=id)
+            print(responses)
             return render(request, "Dino/edit_quiz.html", {
             'questions': Question.objects.filter(quiz_id=id),
             'quiz':Quiz.objects.get(id=id, owner=request.user),
+            "responses":responses
             })
     except Exception as e:
         return render(request, "Dino/error.html", {
@@ -284,3 +289,12 @@ def result(request,id):
         return render(request, "Dino/error.html", {
             "error": e
         })
+def response(request, id):
+    response = Response.objects.get(pk=id)
+    quiz = Quiz.objects.get(pk=response.quiz_id)
+    percent = round(response.point / quiz.max_point * 100)
+    return render(request, "Dino/response.html", {
+        "response":response,
+        "quiz":quiz,
+        "percent": f'{percent}%'
+    })
